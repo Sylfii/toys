@@ -6,11 +6,11 @@
     <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no,minimal-ui"/>
     <title>基于统计方法的数据分布的图形显示</title>
     <link rel="stylesheet" type="text/css" href="view.css" media="all">
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
     <script src="http://d3js.org/d3.v3.min.js"></script>
     <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
+    <script src="func.js"></script>
     <style>
-
-
         body {
         font: 10px sans-serif;
         }
@@ -70,32 +70,32 @@
         html, body{ margin:0 auto; width:100%; height:100%; }
         #pages { margin:0 auto; width:100%; height:100%; }
         .page{ margin:0 auto; width:100%; height:100%; }
+
+        #panel1{
+            position:absolute; top:10%; left:15%;
+            background-color: rgba(255, 255, 255, 0.5);
+            width:20%; height:80%;
+            box-shadow: 2px 2px 1px #888888;
+            display:none;
+        }
+
+        #Instruction li{ margin-bottom:7px;}
+
   </style>
 </head>
 
-<script type="text/javascript">
-    function scr(source, target) {
-        var passTime = 200;
-        var intervalRate = 0.05;
-        var distance = target - source;
-        var distanceRate = 0;
-
-        var func = setInterval(function() {
-            distanceRate = distanceRate + intervalRate;
-            window.scrollTo(0, source + distance * distanceRate);
-
-            if (distanceRate + 1e-5 >= 1) {
-                clearInterval(func);
-            }
-        }, passTime * intervalRate);
-    }
-</script>
-
-<body>
+<body onload="startup()">
 <div id="pages">
     <div class="page">
-        <p>可以用用鼠标或者手指拖动页面，亦可使用鼠标滚轮、键盘方向键等</p>
-         <button id="scroll" onclick="scr(document.documentElement.scrollTop, window.innerHeight)">Scroll me</button>
+        <div id="panel1">
+            <p style="font-size:20px"> Instruction </p>
+            <ul id="Instruction" style="text-align:left;font-size:15px;">
+                <li> browse a database </li>
+                <li> input mysql username </li>
+                <li> input mysql password </li>
+                <li> click 'upload' ! </li>
+            </ul>
+        </div>
     </div>
     <div class="page">
         <p>不久前，针对微博用户@Mor-小某的“锤子手机还是不错的！试用后感觉很不错！就是3000多买个它感觉贵了！定价2600的话还能接受！”这句话，罗永浩在微博上表示“明白，我们考虑一下”。但就在大家还没回过神来的时候锤子科技已经迅速宣布了降价，其中16GB 3G版的售价直接下调到了1980元，32G/64G也分别调整到了2080/2480元。</p>
