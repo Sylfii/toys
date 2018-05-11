@@ -1,2 +1,107 @@
-Hello, world.
-By Forsythia.
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no,minimal-ui"/>
+    <title>基于统计方法的数据分布的图形显示</title>
+    <link rel="stylesheet" type="text/css" href="view.css" media="all">
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
+    <style>
+
+
+        body {
+        font: 10px sans-serif;
+        }
+
+
+        /* --- d3 part start --- */
+        .axis path,
+        .axis line {
+        fill: none;
+        stroke: #000;
+        shape-rendering: crispEdges;
+        }
+
+        /* alter LightBlue */
+        .bar {
+        fill: BurlyWoodz;
+        }
+
+        .bar:hover {
+        fill: orangered ;
+        }
+
+        .x.axis path {
+        display: none;
+        }
+
+        .d3-tip {
+        line-height: 1;
+        font-weight: bold;
+        padding: 12px;
+        background: rgba(0, 0, 0, 0.8);
+        color: #fff;
+        border-radius: 2px;
+        }
+
+        /* Creates a small triangle extender for the tooltip */
+        .d3-tip:after {
+        box-sizing: border-box;
+        display: inline;
+        font-size: 10px;
+        width: 100%;
+        line-height: 1;
+        color: rgba(0, 0, 0, 0.8);
+        content: "\25BC";
+        position: absolute;
+        text-align: center;
+        }
+
+        /* Style northward tooltips differently */
+        .d3-tip.n:after {
+        margin: -1px 0 0 0;
+        top: 100%;
+        left: 0;
+        }
+        /* --- d3 part end --- */
+
+        html, body{ margin:0 auto; width:100%; height:100%; }
+        #pages { margin:0 auto; width:100%; height:100%; }
+        .page{ margin:0 auto; width:100%; height:100%; }
+  </style>
+</head>
+
+<script type="text/javascript">
+    function scr(source, target) {
+        var passTime = 200;
+        var intervalRate = 0.05;
+        var distance = target - source;
+        var distanceRate = 0;
+
+        var func = setInterval(function() {
+            distanceRate = distanceRate + intervalRate;
+            window.scrollTo(0, source + distance * distanceRate);
+
+            if (distanceRate + 1e-5 >= 1) {
+                clearInterval(func);
+            }
+        }, passTime * intervalRate);
+    }
+</script>
+
+<body>
+<div id="pages">
+    <div class="page">
+        <p>可以用用鼠标或者手指拖动页面，亦可使用鼠标滚轮、键盘方向键等</p>
+         <button id="scroll" onclick="scr(document.documentElement.scrollTop, window.innerHeight)">Scroll me</button>
+    </div>
+    <div class="page">
+        <p>不久前，针对微博用户@Mor-小某的“锤子手机还是不错的！试用后感觉很不错！就是3000多买个它感觉贵了！定价2600的话还能接受！”这句话，罗永浩在微博上表示“明白，我们考虑一下”。但就在大家还没回过神来的时候锤子科技已经迅速宣布了降价，其中16GB 3G版的售价直接下调到了1980元，32G/64G也分别调整到了2080/2480元。</p>
+        <button id="scroll" onclick="scr(document.documentElement.scrollTop, 0)">Scroll me</button>
+    </div>
+</div>
+</body>
+
+</html>
