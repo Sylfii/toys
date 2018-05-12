@@ -3,7 +3,10 @@ function startup() {
 
     $('#forms').submit(function (event) {
         event.preventDefault();
-        $("#panel2").fadeOut();
+        $("#panel3").fadeOut();
+        $("#Switch").fadeOut();
+
+        output("Database loading...");
 
         var form = $(this);
         var formData = new FormData(this);
@@ -18,15 +21,16 @@ function startup() {
             processData: false,
             success:function (msg) {
                 if (msg['error']) {
-                    console.log(msg['error']);
+                    output(msg['error']);
                 }
                 else if (msg['success']) {
-                    creatPanel2(msg['success']);
+                    output('');
+                    creatPanel3(msg['success']);
                 }
             //成功提交
             },
-            fail:function (jqXHR, textStatus, errorThrown) {
-            //无法触发.
+            error:function (e) {
+                output("php error");
             //错误信息
             }
         });
@@ -34,14 +38,14 @@ function startup() {
 
 }
 
-function creatPanel2(fields) {
-    var res = document.getElementById("panel2");
+function creatPanel3(fields) {
+    var res = document.getElementById("panel3");
     if (res != null) {
         res.parentNode.removeChild(res);
     }
 
-    var panel2 = document.createElement("div");
-    panel2.id = "panel2";
+    var panel3 = document.createElement("div");
+    panel3.id = "panel3";
 
     var ul = document.createElement("ul");
     for (var key in fields) {
@@ -56,7 +60,7 @@ function creatPanel2(fields) {
         li.appendChild(label);
         ul.appendChild(li);
     }
-    panel2.appendChild(ul);
+    panel3.appendChild(ul);
 
     var button = document.createElement("button");
     button.onclick = function () {
@@ -64,10 +68,24 @@ function creatPanel2(fields) {
     }
     button.innerHTML = "Set";
     button.style = "width:100px; position:absolute; bottom:17px; right:17px;"
-    panel2.appendChild(button);
+    panel3.appendChild(button);
 
-    document.getElementById("page1").appendChild(panel2);
-    $("#panel2").fadeIn();
+    button = document.createElement("button");
+    button.onclick = function () {
+        $("#panel3").fadeOut();
+        $("#Switch").fadeIn();
+    }
+    button.innerHTML = "Hide";
+    button.style = "width:100px; position:absolute; bottom:50px; right:17px;"
+    panel3.appendChild(button);
+
+    document.getElementById("page1").appendChild(panel3);
+    $("#panel3").fadeIn();
+}
+
+function output(msg) {
+    var p = document.getElementById("message");
+    p.innerHTML = msg;
 }
 
 function scr(source, target) {
@@ -84,5 +102,9 @@ function scr(source, target) {
             clearInterval(func);
         }
     }, passTime * intervalRate);
+}
 
+function Switch() {
+    $("#panel3").fadeIn();
+    $("#Switch").fadeOut();
 }

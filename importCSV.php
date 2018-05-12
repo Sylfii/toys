@@ -1,8 +1,15 @@
 <?php
+    session_start();
+
     $database = $_FILES['database']['tmp_name'];
     $username = $_POST["username"];
     $password = $_POST["password"];
     $host = "localhost";
+    $base = "bank";
+    $table = "bank_tbl";
+
+    $_SESSION['username'] = $username;
+    $_SESSION['password'] = $password;
 
     if (empty($database)) {
         throw_error("File doesn't exsist.");
@@ -13,27 +20,18 @@
         throw_error("Connection failed: " . mysqli_connect_error());
     }
 
-    $sqlCommand = "DROP DATABASE IF EXISTS bank";
+    $sqlCommand = "DROP DATABASE IF EXISTS $base";
     if ($connection->query($sqlCommand) === FALSE) {
         throw_error("Error checking database: $connection->error");
     }
 
-    $sqlCommand = "CREATE DATABASE IF NOT EXISTS bank";
-    if ($connection->query($sqlCommand) === FALSE) {
-        throw_error("Error creating database: $connection->error");
-    }
-    $sqlCommand = "DROP DATABASE IF EXISTS bank";
-    if ($connection->query($sqlCommand) === FALSE) {
-        throw_error("Error checking database: $connection->error");
-    }
-
-    $sqlCommand = "CREATE DATABASE IF NOT EXISTS bank";
+    $sqlCommand = "CREATE DATABASE IF NOT EXISTS $base";
     if ($connection->query($sqlCommand) === FALSE) {
         throw_error("Error creating database: $connection->error");
     }
 
-    mysqli_select_db($connection, 'bank');
-    $sqlCommand = "CREATE TABLE bank_tbl(ids INT NOT NULL PRIMARY KEY AUTO_INCREMENT)";
+    mysqli_select_db($connection, $base);
+    $sqlCommand = "CREATE TABLE $table(ids INT NOT NULL PRIMARY KEY AUTO_INCREMENT)";
     if ($connection->query($sqlCommand) === FALSE) {
         throw_error("Error creating table: $connection->error");
     }
@@ -52,9 +50,10 @@
         if ($fields[$key] == "default") {
             $fields[$key] = "defaults";
         }
+        // Can't add a field with '.'
         $fields[$key] = str_replace('.', '_', $fields[$key]);
 
-        $sqlCommand = "ALTER TABLE bank_tbl ADD $fields[$key]";
+        $sqlCommand = "ALTER TABLE $table ADD $fields[$key]";
         if(is_numeric($data)){
             $sqlCommand = $sqlCommand . $typeInt;
             $sample[$key] = (int)$data;
@@ -71,7 +70,7 @@
 
     $field = "(" .implode(", ", $fields) . ")";
     $value = "(" .implode(", ", $sample) . ")";
-    if ($connection->query("INSERT INTO bank_tbl $field VALUES $value") === FALSE) {
+    if ($connection->query("INSERT INTO $table $field VALUES $value") === FALSE) {
         throw_error("Error insert: $connection->error");
     }
 
@@ -85,7 +84,7 @@
             }
         }
         $value = "(" .implode(", ", $line) . ")";
-        if ($connection->query("INSERT INTO bank_tbl $field VALUES $value") === FALSE) {
+        if ($connection->query("INSERT INTO $table $field VALUES $value") === FALSE) {
             throw_error("Error insert: $connection->error");
         }
     }

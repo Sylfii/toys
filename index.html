@@ -4,106 +4,12 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no,minimal-ui"/>
+    <link rel="stylesheet" type="text/css" href="view.css">
     <title>基于统计方法的数据分布的图形显示</title>
-    <link rel="stylesheet" type="text/css" href="view.css" media="all">
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
     <script src="http://d3js.org/d3.v3.min.js"></script>
     <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
     <script src="func.js"></script>
-    <style>
-        body {
-        font: 10px sans-serif;
-        }
-
-
-        /* --- d3 part start --- */
-        .axis path,
-        .axis line {
-        fill: none;
-        stroke: #000;
-        shape-rendering: crispEdges;
-        }
-
-        /* alter LightBlue */
-        .bar {
-        fill: BurlyWoodz;
-        }
-
-        .bar:hover {
-        fill: orangered ;
-        }
-
-        .x.axis path {
-        display: none;
-        }
-
-        .d3-tip {
-        line-height: 1;
-        font-weight: bold;
-        padding: 12px;
-        background: rgba(0, 0, 0, 0.8);
-        color: #fff;
-        border-radius: 2px;
-        }
-
-        /* Creates a small triangle extender for the tooltip */
-        .d3-tip:after {
-        box-sizing: border-box;
-        display: inline;
-        font-size: 10px;
-        width: 100%;
-        line-height: 1;
-        color: rgba(0, 0, 0, 0.8);
-        content: "\25BC";
-        position: absolute;
-        text-align: center;
-        }
-
-        /* Style northward tooltips differently */
-        .d3-tip.n:after {
-        margin: -1px 0 0 0;
-        top: 100%;
-        left: 0;
-        }
-        /* --- d3 part end --- */
-
-        html, body{ margin:0 auto; width:100%; height:100%; }
-        #pages { margin:0 auto; width:100%; height:100%; }
-        .page{ margin:0 auto; width:100%; height:100%; }
-
-        #panel1{
-            position:absolute; top:10%; left:8%;
-            background-color: rgba(255, 255, 255, 0.5);
-            width:20%; min-width: 250px;
-            height:80%; min-height:500px;
-            box-shadow: 2px 2px 1px #888888;
-            display:none;
-        }
-
-        #panel2{
-            position:fixed; bottom:10%; right:8%;
-            background-color: rgba(255, 255, 255, 0.5);
-            width:60%; min-width: 750px;
-            height:50%; min-height: 300px;
-            box-shadow: 2px 2px 1px #888888;
-            display:none;
-            columns:3;
-            padding-top:20px;
-        }
-
-        #Instruction li{ margin-bottom:7px; }
-        #panel1 form { font-size:15px; }
-        #panel1 form input { width:77%; }
-
-        #panel2 ul {
-            margin:auto;
-            list-style:none;
-            text-align:left;
-            font-size:15px;
-            line-height:2;
-        }
-
-  </style>
 </head>
 
 <body onload="startup()">
@@ -127,12 +33,24 @@
                 <input type="submit" style ="margin-top:15%">
             </form>
         </div>
+        <div id="panel2">
+            <h1> Trick or Treat! </h1>
+            <h2> DATA VISUALIZATION </h2>
+            <p id="message"> </p>
+        </div>
     </div>
     <div class="page">
         <p>不久前，针对微博用户@Mor-小某的“锤子手机还是不错的！试用后感觉很不错！就是3000多买个它感觉贵了！定价2600的话还能接受！”这句话，罗永浩在微博上表示“明白，我们考虑一下”。但就在大家还没回过神来的时候锤子科技已经迅速宣布了降价，其中16GB 3G版的售价直接下调到了1980元，32G/64G也分别调整到了2080/2480元。</p>
         <button id="scroll" onclick="scr(document.documentElement.scrollTop, 0)">Scroll me</button>
     </div>
 </div>
+
+<div>
+　　<a id="GoTop" onclick="scr(document.documentElement.scrollTop,0)" href="javascript:void(0)">∧</a>
+</div>
+
+<div>
+    <a id="Switch" onclick="Switch()" href="javascript:void(0)">+</a>
 </body>
 
 </html>
