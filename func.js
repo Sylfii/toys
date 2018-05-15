@@ -1,6 +1,26 @@
 function startup() {
     $("#panel1").fadeIn();
 
+/*
+    fields = new Array();
+    fields[0] = "balance";
+    //fields[1] = "job";
+    //fields[2] = "rua";
+
+    for (let field_id in fields) {
+        var span = document.createElement("span");
+        span.id = fields[field_id];
+        document.getElementById("page2").appendChild(span);
+        d3.json("getData.php?key=" + fields[field_id],
+        function(error, data) {
+            draw_Create(data, field_id);
+        });
+        if(field_id > 0) {
+            break;
+        }
+    }
+    */
+
     $('#forms').submit(function (event) {
         event.preventDefault();
         $("#panel3").fadeOut();
@@ -24,8 +44,19 @@ function startup() {
                     output(msg['error']);
                 }
                 else if (msg['success']) {
-                    output('');
-                    creatPanel3(msg['success']);
+                    fields = msg['success'];
+                    output('Charts generating...');
+                    for (let field_id in fields) {
+                        d3.json("getData.php?key=" + fields[field_id],
+                        function(error, data) {
+                            var span = document.createElement("span");
+                            span.id = fields[field_id];
+                            document.getElementById("page2").appendChild(span);
+                            draw_Create(data, field_id);
+                        });
+                    }
+                    output('Done.');
+                    creatPanel3();
                 }
             //成功提交
             },
@@ -38,7 +69,7 @@ function startup() {
 
 }
 
-function creatPanel3(fields) {
+function creatPanel3() {
     var res = document.getElementById("panel3");
     if (res != null) {
         res.parentNode.removeChild(res);
@@ -64,7 +95,7 @@ function creatPanel3(fields) {
 
     var button = document.createElement("button");
     button.onclick = function () {
-        scr(document.documentElement.scrollTop, window.innerHeight);
+        $(window).scrollTo("#page2", 200);
     }
     button.innerHTML = "Set";
     button.style = "width:100px; position:absolute; bottom:17px; right:17px;"
@@ -86,22 +117,6 @@ function creatPanel3(fields) {
 function output(msg) {
     var p = document.getElementById("message");
     p.innerHTML = msg;
-}
-
-function scr(source, target) {
-    var passTime = 200;
-    var intervalRate = 0.05;
-    var distance = target - source;
-    var distanceRate = 0;
-
-    var func = setInterval(function() {
-        distanceRate = distanceRate + intervalRate;
-        window.scrollTo(0, source + distance * distanceRate);
-
-        if (distanceRate + 1e-5 >= 1) {
-            clearInterval(func);
-        }
-    }, passTime * intervalRate);
 }
 
 function Switch() {

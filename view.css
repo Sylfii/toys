@@ -6,15 +6,6 @@ body {
 	text-align:center;
 }
 
-#panel2 h1 {
-	background-color:#6699CC;
-	margin:0;
-	min-height:0;
-	padding:0;
-	text-decoration:none;
-	text-indent:-8000px;
-}
-
 /* --- d3 part start --- */
 .axis path,
 .axis line {
@@ -24,9 +15,11 @@ shape-rendering: crispEdges;
 }
 
 /* alter LightBlue */
+/*
 .bar {
-fill: BurlyWoodz;
+fill: BurlyWood;
 }
+*/
 
 .bar:hover {
 fill: orangered ;
@@ -100,6 +93,15 @@ html, body{ margin:0 auto; width:100%; height:100%; }
 #Instruction li{ margin-bottom:7px; }
 #panel1 form { font-size:15px; }
 #panel1 form input { width:77%; }
+
+#panel2 h1 {
+	background-color:#6699CC;
+	margin:0;
+	min-height:0;
+	padding:0;
+	text-decoration:none;
+	text-indent:-8000px;
+}
 
 #panel3 ul {
 	margin:auto;

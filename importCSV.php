@@ -89,6 +89,9 @@
         }
     }
 
+    fclose($csv_handle);
+    mysqli_close($connection);
+
     $successinfo = array("success" => $fields);
     echo json_encode($successinfo);
 
