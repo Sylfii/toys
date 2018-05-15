@@ -26,6 +26,15 @@ function startup() {
         $("#panel3").fadeOut();
         $("#Switch").fadeOut();
 
+        var page2 = document.getElementById("page2");
+        if (page2 != null) {
+            page2.parentNode.removeChild(page2);
+        }
+        page2 = document.createElement("div");
+        page2.id = "page2";
+        page2.class = "page";
+        document.getElementById("pages").appendChild(page2);
+
         output("Database loading...");
 
         var form = $(this);
@@ -49,9 +58,6 @@ function startup() {
                     for (let field_id in fields) {
                         d3.json("getData.php?key=" + fields[field_id],
                         function(error, data) {
-                            var span = document.createElement("span");
-                            span.id = fields[field_id];
-                            document.getElementById("page2").appendChild(span);
                             draw_Create(data, field_id);
                         });
                     }

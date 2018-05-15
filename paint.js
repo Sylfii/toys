@@ -57,9 +57,10 @@ function draw_Create(data, field_id) {
             .range([height, 0]);
     }
 
-    var svg = d3.select("#" + fields[field_id]).append("svg")
+    var svg = d3.select("#page2").append("svg")
         .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom);
+        .attr("height", height + margin.top + margin.bottom)
+        .attr("id", fields[field_id]);
 
     var bar1 = svg.append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
