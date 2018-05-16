@@ -1,7 +1,7 @@
 function draw_Create(data, field_id) {
     var margin = { top:80, right: 40, bottom: 80, left: 40},
         width = (data.length < 25 ? data.length * 50 : 1000),
-        height = 400 - margin.top - margin.bottom, tip, x, y;
+        height = 400 - margin.top - margin.bottom, tip;
 
     if (data.length > 100) {
         width = 200;
@@ -15,12 +15,12 @@ function draw_Create(data, field_id) {
         var val_min = Math.min.apply(Math,data.map(function(d){return d[fields[field_id]];}));
         var val_max = Math.max.apply(Math,data.map(function(d){return d[fields[field_id]];}));
         var bin_num = 4;
-        var histogram = d3.layout.histogram()
+        histogram[field_id] = d3.layout.histogram()
                         .value(function(d) {return d[fields[field_id]]; })
                         .range([val_min, val_max])
                         .bins(bin_num)
                         .frequency(true);
-        var histData = histogram(data);
+        var histData = histogram[field_id](data);
 
         var rect_step = 50;
         var heights = [];
@@ -28,12 +28,12 @@ function draw_Create(data, field_id) {
             heights.push( histData[i].y );
         }
 
-        x = d3.scale.ordinal()
+        xScale[field_id] = d3.scale.ordinal()
             .domain(histData.map(function(d) {
                 return d.x;
             }))
             .rangeRoundBands([0, width]);
-        y = d3.scale.linear()
+        yScale[field_id] = d3.scale.linear()
             .domain([0, d3.max(heights)])
             .range([height, 0]);
     }
@@ -45,13 +45,13 @@ function draw_Create(data, field_id) {
                     return "<strong>Frequency:</strong> <span style='color:red'>" + d["COUNT(*)"] + "</span>";
                 })
 
-        x = d3.scale.ordinal()
+        xScale[field_id] = d3.scale.ordinal()
             .domain(data.map(function(d) {
                 return d[fields[field_id]];
             }))
             .rangeRoundBands([0, width]);
 
-        y = d3.scale.linear()
+        yScale[field_id] = d3.scale.linear()
             .domain([0, Math.max.apply(Math,data.map(function(d){
                 return d["COUNT(*)"];}))])
             .range([height, 0]);
@@ -61,6 +61,7 @@ function draw_Create(data, field_id) {
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
         .attr("id", fields[field_id]);
+    $("#" + fields[field_id]).hide();
 
     var bar1 = svg.append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
@@ -73,10 +74,10 @@ function draw_Create(data, field_id) {
     //var formatPercent = d3.format(".0%");
 
     var xAxis = d3.svg.axis()
-            .scale(x)
+            .scale(xScale[field_id])
             .orient("bottom");
     var yAxis = d3.svg.axis()
-            .scale(y)
+            .scale(yScale[field_id])
             .orient("left")
             .ticks(10);
 
@@ -104,21 +105,33 @@ function draw_Create(data, field_id) {
         bar1.selectAll(".bar")
             .data(histData)
         .enter().append("rect")
-            .attr("class", "bar")
+            .attr("class", field_id + " bar")
+            .attr("id", function(d) {
+                return '(' + fields[field_id] + "<'" + (d.x - d.dx/2) + "' AND " +
+                             fields[field_id] + ">='" + (d.x + d.dx/2) + "')";
+            })
             .attr("x", function(d, i) {
-                return x(d.x);
+                return xScale[field_id](d.x);
             })
             .attr("y", function(d, i) {
-                return y(d.y);
+                return yScale[field_id](d.y);
             })
-            .attr("width", x.rangeBand() - 1)
+            .attr("width", xScale[field_id].rangeBand() - 1)
             .attr("height", function(d) {
-                return height - y(d.y);
+                return height - yScale[field_id](d.y);
             })
             .attr("fill", "BurlyWood")
             .on("click", function() {
-                console.log(this.id);
-                d3.select(this).attr("fill", "orangered");
+                var ord = parseInt(this.classList[0]);
+                var p = $.inArray(this.id, constraint[ord]);
+                if (p == -1) {
+                    d3.select(this).attr("fill", "orangered");
+                    constraint[ord].push(this.id);
+                }
+                else {
+                    d3.select(this).attr("fill", "BurlyWood");
+                    constraint[ord].splice(p, 1);
+                }
             })
             .on("mouseover", tip.show)
             .on("mouseout", tip.hide);
@@ -127,21 +140,32 @@ function draw_Create(data, field_id) {
         bar1.selectAll(".bar")
             .data(data)
         .enter().append("rect")
-            .attr("class", "bar")
-            .attr("x", function(d) {
-                return x(d[fields[field_id]]);
+            .attr("class", field_id + " bar")
+            .attr("id", function(d) {
+                return fields[field_id] + "='" + d[fields[field_id]] + "'";
             })
-            .attr("width", x.rangeBand()-1)
+            .attr("x", function(d) {
+                return xScale[field_id](d[fields[field_id]]);
+            })
+            .attr("width", xScale[field_id].rangeBand()-1)
             .attr("height", function(d) {
-                return height - y(d["COUNT(*)"]);
+                return height - yScale[field_id](d["COUNT(*)"]);
             })
             .attr("y", function(d) {
-                return y(d["COUNT(*)"]);
+                return yScale[field_id](d["COUNT(*)"]);
             })
             .attr("fill", "BurlyWood")
             .on("click", function() {
-                console.log(this.id);
-                d3.select(this).attr("fill", "orangered");
+                var ord = parseInt(this.classList[0]);
+                var p = $.inArray(this.id, constraint[ord]);
+                if (p == -1) {
+                    d3.select(this).attr("fill", "orangered");
+                    constraint[ord].push(this.id);
+                }
+                else {
+                    d3.select(this).attr("fill", "BurlyWood");
+                    constraint[ord].splice(p, 1);
+                }
             })
             .on("mouseover", tip.show)
             .on("mouseout", tip.hide);
@@ -156,4 +180,68 @@ function draw_Create(data, field_id) {
         .text(function(d) {
             return fields[field_id];
         });
+}
+
+function draw_filter(data, field_id) {
+    for (let i in constraint[field_id]) {
+        d3.select(document.getElementById(constraint[field_id][i])).attr("fill", "BurlyWood");
+    }
+    constraint[field_id] = [];
+
+    var bar2 = d3.select("#" + fields[field_id] + "_2");
+    if (histogram[field_id] != undefined) {
+        var tip = d3.tip()
+                .attr('class', 'd3-tip')
+                .offset([-10, 0])
+                .html(function(d) {
+                    return "<strong>Frequency:</strong> <span style='color:red'>" + d.y + "</span>";
+                })
+        bar2.call(tip);
+
+        var histData = histogram[field_id](data);
+        bar2.selectAll(".bar")
+            .data(histData)
+        .enter().append("rect")
+            .attr("class", field_id + " bar")
+            .attr("x", function(d, i) {
+                return xScale[field_id](d.x);
+            })
+            .attr("y", function(d, i) {
+                return yScale[field_id](d.y);
+            })
+            .attr("width", xScale[field_id].rangeBand() - 1)
+            .attr("height", function(d) {
+                return 240 - yScale[field_id](d.y);
+            })
+            .attr("fill", "steelblue")
+            .on("mouseover", tip.show)
+            .on("mouseout", tip.hide);
+    }
+    else {
+        var tip = d3.tip()
+                .attr('class', 'd3-tip')
+                .offset([-10, 0])
+                .html(function(d) {
+                    return "<strong>Frequency:</strong> <span style='color:red'>" + d["COUNT(*)"] + "</span>";
+                })
+        bar2.call(tip);
+
+        bar2.selectAll(".bar")
+            .data(data)
+        .enter().append("rect")
+            .attr("class", field_id + " bar")
+            .attr("x", function(d) {
+                return xScale[field_id](d[fields[field_id]]);
+            })
+            .attr("width", xScale[field_id].rangeBand()-1)
+            .attr("height", function(d) {
+                return 240 - yScale[field_id](d["COUNT(*)"]);
+            })
+            .attr("y", function(d) {
+                return yScale[field_id](d["COUNT(*)"]);
+            })
+            .attr("fill", "steelblue")
+            .on("mouseover", tip.show)
+            .on("mouseout", tip.hide);
+    }
 }

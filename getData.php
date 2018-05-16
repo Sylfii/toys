@@ -16,7 +16,12 @@
     mysqli_select_db($connection, $base);
 
     $key = $_GET["key"];
-    $sqlCommand = "SELECT $key, COUNT(*) FROM $table GROUP BY $key";
+    $constraints = $_POST["constraints"];
+    $sqlCommand = "SELECT $key, COUNT(*) FROM $table ";
+    if ($constraints) {
+        $sqlCommand .= "WHERE ($constraints) ";
+    }
+    $sqlCommand .= "GROUP BY $key";
     $query = mysqli_query($connection, $sqlCommand);
     if (!$query) {
         die;
@@ -31,4 +36,9 @@
     }
     mysqli_close($connection);
     echo json_encode($data);
+
+function throw_error($info) {
+    $errorinfo = array("error" => $info);
+    die(json_encode($errorinfo));
+}
 ?>
