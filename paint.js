@@ -22,7 +22,6 @@ function draw_Create(data, field_id) {
                         .frequency(true);
         var histData = histogram[field_id](data);
 
-        var rect_step = 50;
         var heights = [];
         for (var i = 0; i < histData.length; i++) {
             heights.push( histData[i].y );
@@ -107,16 +106,16 @@ function draw_Create(data, field_id) {
         .enter().append("rect")
             .attr("class", field_id + " bar")
             .attr("id", function(d) {
-                return '(' + fields[field_id] + "<'" + (d.x - d.dx/2) + "' AND " +
-                             fields[field_id] + ">='" + (d.x + d.dx/2) + "')";
+                return '(' + fields[field_id] + ">=" + d.x + " AND " +
+                             fields[field_id] + "<" + (d.x + d.dx) + ")";
             })
             .attr("x", function(d, i) {
-                return xScale[field_id](d.x);
+                return xScale[field_id](d.x) + xScale[field_id].rangeBand()/2;
             })
             .attr("y", function(d, i) {
                 return yScale[field_id](d.y);
             })
-            .attr("width", xScale[field_id].rangeBand() - 1)
+            .attr("width", xScale[field_id].rangeBand())
             .attr("height", function(d) {
                 return height - yScale[field_id](d.y);
             })
@@ -204,12 +203,12 @@ function draw_filter(data, field_id) {
         .enter().append("rect")
             .attr("class", field_id + " bar")
             .attr("x", function(d, i) {
-                return xScale[field_id](d.x);
+                return xScale[field_id](d.x) + xScale[field_id].rangeBand()/2;
             })
             .attr("y", function(d, i) {
                 return yScale[field_id](d.y);
             })
-            .attr("width", xScale[field_id].rangeBand() - 1)
+            .attr("width", xScale[field_id].rangeBand())
             .attr("height", function(d) {
                 return 240 - yScale[field_id](d.y);
             })

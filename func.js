@@ -111,7 +111,7 @@ function creatPanel3() {
             d3.select("#" + fields[field_id] + "_2").selectAll(".bar").remove();
         }
         if (constraints != 0) {
-            console.log(constraints.join(" AND "));
+            //console.log(constraints.join(" AND "));
             for (let field_id in fields) {
                 $.ajax({
                     type: "POST",
@@ -120,7 +120,7 @@ function creatPanel3() {
                     data: { constraints:constraints.join(" AND ") },
                     success:function(data) {
                         if (data['error']) {
-                            console.log(data['error']);
+                            output("php error:" + data['error']);
                         }
                         else {
                             draw_filter(data, field_id);
@@ -131,7 +131,6 @@ function creatPanel3() {
                     }
                 });
             }
-            //console.log(constraint);
         }
     }
     button.innerHTML = "Filter";
