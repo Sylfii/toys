@@ -1,3 +1,4 @@
+/* --- main body part start --- */
 body {
 	background:#FDF5E6;
 	font-family:"Lucida Grande", Tahoma, Arial, Verdana, sans-serif;
@@ -5,6 +6,7 @@ body {
 	margin:8px 0 16px;
 	text-align:center;
 }
+/* --- main body part end --- */
 
 /* --- d3 part start --- */
 .axis path,
@@ -14,13 +16,7 @@ stroke: #000;
 shape-rendering: crispEdges;
 }
 
-/* alter LightBlue */
-/*
-.bar {
-fill: BurlyWood;
-}
-*/
-
+/* change the color or bar which is hovered */
 .bar:hover {
 fill: orangered ;
 }
@@ -29,6 +25,7 @@ fill: orangered ;
 display: none;
 }
 
+/* style of tip message */
 .d3-tip {
 line-height: 1;
 font-weight: bold;
@@ -59,10 +56,12 @@ left: 0;
 }
 /* --- d3 part end --- */
 
+/* make the html looked like a whole page */
 html, body{ margin:0 auto; width:100%; height:100%; }
 #pages { margin:0 auto; width:100%; height:100%; }
 .page{ margin:0 auto; width:100%; height:100%; }
 
+/* the first panel which is used to input database and mysql name & passwd */
 #panel1{
 	position:absolute; top:10%; left:8%;
 	background-color: rgba(255, 255, 255, 0.5);
@@ -72,6 +71,7 @@ html, body{ margin:0 auto; width:100%; height:100%; }
 	display:none;
 }
 
+/* the second panel to show the title and message */
 #panel2{
 	position:absolute; top:10%; left:32%;
 	width:60%; min-width: 750px;
@@ -79,6 +79,7 @@ html, body{ margin:0 auto; width:100%; height:100%; }
 	padding:0px;
 }
 
+/* the third panel to show the checkboxes and buttons */
 #panel3{
 	position:fixed; bottom:10%; right:8%;
 	background-color: rgba(255, 255, 255, 0.5);
@@ -111,6 +112,7 @@ html, body{ margin:0 auto; width:100%; height:100%; }
 	line-height:2;
 }
 
+/* Gotop button */
 #GoTop {
 	position:fixed; bottom:30px; right:30px;
 	text-align:center;
@@ -122,6 +124,7 @@ html, body{ margin:0 auto; width:100%; height:100%; }
 	text-decoration:none;
 }
 
+/* Show the panel3 button */
 #Switch{
 	position:fixed; bottom:80px; right:30px;
 	text-align:center;

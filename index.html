@@ -20,19 +20,19 @@
         <div id="panel1">
             <p style="font-size:20px"> Instruction </p>
             <ul id="Instruction" style="text-align:left;font-size:15px;">
-                <li> browse a database </li>
                 <li> input mysql username </li>
                 <li> input mysql password </li>
+                <li> browse a database </li>
                 <li> click 'upload' ! </li>
             </ul>
             <form id="forms" enctype="multipart/form-data" method="post" action="importCSV.php">
                 <p style="margin-top:15%">Username:</p>
-                <input type="text" name="username"/>
+                <input type="text" name="username" value="test"/>
                 <p>Password:</p>
                 <input type="password" name="password"/>
                 <p>Database:</p>
                 <input type="file" name="database"/>
-                <input type="submit" style ="margin-top:15%">
+                <input type="submit" style="margin-top:15%" value="upload">
             </form>
         </div>
         <div id="panel2">
@@ -52,3 +52,10 @@
 </body>
 
 </html>
+
+<!--
+This index.html almostly has no function except load the database.
+The 'submit' function is defined in the func.js function startup().
+It is a trigger, after submitting panel3 will be showed and charts will be ready.
+And in panel2, there is a hidden subtitle ‘Trick or Treat!’ which cannot be seen if view.css is loaded correctly.
+-->
