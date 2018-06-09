@@ -89,7 +89,7 @@ Click button '^' to scroll back to top:
 
 Select the filter condition:
 
-![](snapshot\8.png)
+![](snapshot/8.png)
 
 Then Click button 'Filter':
 
