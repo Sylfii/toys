@@ -11,6 +11,9 @@
 
     //connect mysql
     $connection = mysqli_connect($host, $username, $password);
+    // if you get an error 500, it may happen here since php-mysql doesn't work well
+    // this statement will help you find this bug
+    // throw_error("mysql connect success");
     if (!$connection) {
         throw_error("Connection failed: " . mysqli_connect_error());
     }

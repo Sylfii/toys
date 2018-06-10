@@ -79,6 +79,7 @@ html, body{ margin:0 auto; width:100%; height:100%; }
 	padding:0px;
 }
 
+/* --- panel3 part start --- */
 /* the third panel to show the checkboxes and buttons */
 #panel3{
 	position:fixed; bottom:10%; right:8%;
@@ -91,6 +92,7 @@ html, body{ margin:0 auto; width:100%; height:100%; }
 	padding-top:20px;
 }
 
+/* this style is used for the checkboxes */
 #Instruction li{ margin-bottom:7px; }
 #panel1 form { font-size:15px; }
 #panel1 form input { width:77%; }
@@ -111,6 +113,8 @@ html, body{ margin:0 auto; width:100%; height:100%; }
 	font-size:15px;
 	line-height:2;
 }
+
+/* --- panel3 part end --- */
 
 /* Gotop button '^'*/
 #GoTop {

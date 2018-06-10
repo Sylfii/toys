@@ -39,7 +39,7 @@ sudo apt-get install php-mysql
 Download zip or git clone the whole package:
 
 ```bash
-git clone git@github.com:Sylfii/toys.git
+git clone https://github.com/Sylfii/toys.git
 ```
 
 Then copy all the files into /var/www/html:
@@ -114,3 +114,21 @@ At last, you can click '^' and back to top to upload another csv file.
 ![](snapshot/13.png)
 
 That's all, thanks XD.
+
+## FAQ
+
+1. Q: I can't load the page !
+
+   A: Since I get jQuery from Google, you're supposed to be able to connect to google at least :)
+
+2. Q: I can't load database ! (PHP Error: Internal Server Error 500)
+
+   A: It's unusual but it exists. Check whether install mysql-client & php-mysql correctly, and then restart apache2.
+
+   ```bash
+   sudo apt-get install mysql-client
+   sudo apt-get install php-mysql
+   sudo service apache2 restart
+   ```
+
+    

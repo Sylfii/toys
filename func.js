@@ -40,7 +40,7 @@ function startup() {
             },
             //this error function will be called only if getData.php has a syntax error
             error:function (e) {
-                output("php error:" + e);
+                output("php error:" + e.statusText + ' ' + e.status);
             }
         });
     });

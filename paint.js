@@ -227,6 +227,7 @@ function draw_filter(data, field_id) {
                 })
         bar2.call(tip);
 
+        // draw histogram bars
         var histData = histogram[field_id](data);
         bar2.selectAll(".bar")
             .data(histData)
@@ -246,6 +247,7 @@ function draw_filter(data, field_id) {
             .on("mouseover", tip.show)
             .on("mouseout", tip.hide);
     }
+    // draw bar chart bars
     else {
         var tip = d3.tip()
                 .attr('class', 'd3-tip')
