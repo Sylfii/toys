@@ -1,6 +1,7 @@
 <?php
     header('Access-Control-Allow-Origin: *');
-    session_start();   //this is used to get username & password
+    //this is used to get username & password
+    session_start();
 
     $username = $_SESSION['username'];
     $password = $_SESSION['password'];
@@ -44,6 +45,7 @@
     mysqli_close($connection);
     echo json_encode($data);
 
+//This functions is used to return error message
 function throw_error($info) {
     $errorinfo = array("error" => $info);
     die(json_encode($errorinfo));

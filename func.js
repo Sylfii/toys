@@ -10,16 +10,6 @@ function startup() {
         $("#panel3").fadeOut();
         $("#Switch").fadeOut();
 
-        //same as panel3, page2 is used to draw charts, it should be reset as well
-        var page2 = document.getElementById("page2");
-        if (page2 != null) {
-            page2.parentNode.removeChild(page2);
-        }
-        page2 = document.createElement("div");
-        page2.id = "page2";
-        page2.class = "page";
-        document.getElementById("pages").appendChild(page2);
-
         //output what is happenning, it means getData.php is loading database
         output("Database loading...");
 
@@ -44,19 +34,7 @@ function startup() {
                 //if success with out error message, it will draw charts
                 else if (msg['success']) {
                     fields = msg['success'];
-                    xScale = [];
-                    yScale = [];
-                    histogram = [];
-                    constraint = [];
-                    output('Charts generating...');
-                    for (let field_id in fields) {
-                        constraint[field_id] = [];
-                        d3.json("getData.php?key=" + fields[field_id],
-                        function(error, data) {
-                            draw_Create(data, field_id);
-                        });
-                    }
-                    output('Done.');
+                    output('Upload Success.');
                     creatPanel3();
                 }
             },
@@ -69,8 +47,22 @@ function startup() {
 
 }
 
+/* --- creatPage2 function --- */
+// This function is used to create page2 which is used to draw Charts
+function creatPage2() {
+    //if page2 has been created before, it should be reset as well
+    var page2 = document.getElementById("page2");
+    if (page2 != null) {
+        page2.parentNode.removeChild(page2);
+    }
+    page2 = document.createElement("div");
+    page2.id = "page2";
+    page2.setAttribute("class", "page");
+    document.getElementById("pages").appendChild(page2);
+}
+
 /* --- creatPanel3 function --- */
-// This function is used to creat panel3 which shows the checkboxes and buttons
+// This function is used to create panel3 which shows the checkboxes and buttons
 function creatPanel3() {
     // if a panel3 has been created before, delete it.
     var res = document.getElementById("panel3");
@@ -98,23 +90,56 @@ function creatPanel3() {
     }
     panel3.appendChild(ul);
 
-    // the button 'set'
+    // the checkbox 'Normalize'.
+    // this checkbox determines whether to normalize data or not.
+    var label = document.createElement("label");
+    var checkBox = document.createElement("input");
+    var span = document.createElement("span");
+    span.innerHTML = "Normalize";
+    checkBox.type = "checkbox";
+    checkBox.id = "normalize_checkbox";
+    label.appendChild(checkBox);
+    label.appendChild(span);
+    label.style = "position:absolute; bottom:17px; left:17px;"
+    panel3.appendChild(label);
+
+    // the button 'Set'
     // this button is used to show the checked charts
     var button = document.createElement("button");
     button.onclick = function () {
+        creatPage2();
+
+        sum = [];
+        xScale = [];
+        yScale = [];
+        histogram = [];
+        constraint = [];
+        output('Charts generating...');
         for (let field_id in fields) {
+            constraint[field_id] = [];
+            sum[field_id] = 0;
             if ($("#"+fields[field_id]+"_checkbox").attr('checked')) {
-                $("#"+fields[field_id]).show();
-            }
-            else {
-                $("#"+fields[field_id]).hide();
+                d3.json("getData.php?key=" + fields[field_id],
+                function(error, data) {
+                    for (let i in data) {
+                        sum[field_id] += parseFloat(data[i]['COUNT(*)']);
+                    }
+                    if ($("#normalize_checkbox").attr('checked')) {
+                        for (let i in data) {
+                            data[i]['COUNT(*)'] /= sum[field_id];
+                        }
+                    }
+                    draw_Create(data, field_id);
+                });
             }
         }
+        output('Done.');
         $(window).scrollTo("#page2", 200);
     }
     button.innerHTML = "Set";
     button.style = "width:100px; position:absolute; bottom:17px; right:17px;"
     panel3.appendChild(button);
+
 
     // the button 'Filter'
     // this button is used to show the data filtered by the chosen data
@@ -140,6 +165,11 @@ function creatPanel3() {
                             output("php error:" + data['error']);
                         }
                         else {
+                            if ($("#normalize_checkbox").attr('checked')) {
+                                for (let i in data) {
+                                    data[i]['COUNT(*)'] /= sum[field_id];
+                                }
+                            }
                             draw_filter(data, field_id);
                         }
                     },

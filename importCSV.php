@@ -105,7 +105,7 @@
     $successinfo = array("success" => $fields);
     echo json_encode($successinfo);
 
-
+//This functions is used to return error message
 function throw_error($info) {
     $errorinfo = array("error" => $info);
     die(json_encode($errorinfo));

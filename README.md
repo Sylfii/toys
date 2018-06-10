@@ -75,34 +75,42 @@ Then it will look like:
 
 ![](snapshot/4.png)
 
-Click button 'Hide' to hide this panel:
+Tick checkbox 'Normalize' and click button 'Set' again:
 
 ![](snapshot/5.png)
 
-Click button '+' to show this panel:
+The charts will be normalized:
 
 ![](snapshot/6.png)
 
-Click button '^' to scroll back to top:
+Click button 'Hide' to hide this panel:
 
 ![](snapshot/7.png)
 
-Select the filter condition:
+Click button '+' to show this panel:
 
 ![](snapshot/8.png)
 
-Then Click button 'Filter':
+Click button '^' to scroll back to top:
 
 ![](snapshot/9.png)
 
-It works:
+Select the filter condition:
 
 ![](snapshot/10.png)
+
+Then Click button 'Filter':
+
+![](snapshot/11.png)
+
+It works:
+
+![](snapshot/12.png)
 
 Of course you can click 'Filter' without condition to reset.
 
 At last, you can click '^' and back to top to upload another csv file.
 
-![](snapshot/11.png)
+![](snapshot/13.png)
 
 That's all, thanks XD.

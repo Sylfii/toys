@@ -76,7 +76,7 @@ function draw_Create(data, field_id) {
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
         .attr("id", fields[field_id]);
-    $("#" + fields[field_id]).hide();
+    //$("#" + fields[field_id]).hide();
 
     // bar1 contains the bars of the data itself.
     var bar1 = svg.append("g")
